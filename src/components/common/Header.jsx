@@ -1,0 +1,18 @@
+import React from "react";
+
+const Header = ({title}) => {
+    return (
+        <header className="header">
+            <div className="over-lay"></div>
+            <div className="container">
+                <h1 className="header-title text-center">{title}</h1>
+
+
+
+            </div>
+
+        </header>
+    )
+}
+
+export default Header
