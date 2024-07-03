@@ -6,91 +6,92 @@ import { FormControl, Form  } from "react-bootstrap";
 import BookingSummary from "./BookingSummary";
 
 const BookingForm = () => {
-	const [validated, setValidated] = useState(false);
-	const [isSubmitted, setIsSubmitted] = useState(false);
-	const [errorMessage, setErrorMessage] = useState("");
-	const [roomPrice, setRoomPrice] = useState(0);
+	const [validated, setValidated] = useState(false)
+	const [isSubmitted, setIsSubmitted] = useState(false)
+	const [errorMessage, setErrorMessage] = useState("")
+	const [roomPrice, setRoomPrice] = useState(0)
 
-	const currentUser = localStorage.getItem("userId");
+const currentUser = localStorage.getItem("userId")
 
 	const [booking, setBooking] = useState({
 		guestFullName: "",
-		guestEmail: currentUser || "",
+		guestEmail: currentUser,
 		checkInDate: "",
 		checkOutDate: "",
 		numOfAdults: "",
 		numOfChildren: ""
-	});
+	})
 
-	const { roomId } = useParams();
-	const navigate = useNavigate();
+	const { roomId } = useParams()
+	const navigate = useNavigate()
 
 	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setBooking({ ...booking, [name]: value });
-		setErrorMessage("");
-	};
+		const { name, value } = e.target
+		setBooking({ ...booking, [name]: value })
+		setErrorMessage("")
+	}
+
 
 	const getRoomPriceById = async (roomId) => {
 		try {
-			const response = await getRoomById(roomId);
-			setRoomPrice(response.roomPrice);
+			const response = await getRoomById(roomId)
+			setRoomPrice(response.roomPrice)
 		} catch (error) {
-			setErrorMessage("Failed to fetch room price");
+			throw new Error(error)
 		}
-	};
+	}
 
 	useEffect(() => {
-		getRoomPriceById(roomId);
-	}, [roomId]);
+		getRoomPriceById(roomId)
+	}, [roomId])
 
 	const calculatePayment = () => {
-		const checkInDate = moment(booking.checkInDate);
-		const checkOutDate = moment(booking.checkOutDate);
-		const diffInDays = checkOutDate.diff(checkInDate, "days");
-		const paymentPerDay = roomPrice ? roomPrice : 0;
-		return diffInDays * paymentPerDay;
-	};
+		const checkInDate = moment(booking.checkInDate)
+		const checkOutDate = moment(booking.checkOutDate)
+		const diffInDays = checkOutDate.diff(checkInDate, "days")
+		const paymentPerDay = roomPrice ? roomPrice : 0
+		return diffInDays * paymentPerDay
+	}
 
 	const isGuestCountValid = () => {
-		const adultCount = parseInt(booking.numOfAdults);
-		const childrenCount = parseInt(booking.numOfChildren);
-		const totalCount = adultCount + childrenCount;
-		return totalCount >= 1 && adultCount >= 1;
-	};
+		const adultCount = parseInt(booking.numOfAdults)
+		const childrenCount = parseInt(booking.numOfChildren)
+		const totalCount = adultCount + childrenCount
+		return totalCount >= 1 && adultCount >= 1
+	}
 
 	const isCheckOutDateValid = () => {
 		if (!moment(booking.checkOutDate).isSameOrAfter(moment(booking.checkInDate))) {
-			setErrorMessage("Check-out date must be after check-in date");
-			return false;
+			setErrorMessage("Check-out date must be after check-in date")
+			return false
 		} else {
-			setErrorMessage("");
-			return true;
+			setErrorMessage("")
+			return true
 		}
-	};
+	}
 
 	const handleSubmit = (e) => {
-		e.preventDefault();
-		const form = e.currentTarget;
+		e.preventDefault()
+		const form = e.currentTarget
 		if (form.checkValidity() === false || !isGuestCountValid() || !isCheckOutDateValid()) {
-			e.stopPropagation();
+			e.stopPropagation()
 		} else {
-			setIsSubmitted(true);
+			setIsSubmitted(true)
 		}
-		setValidated(true);
-	};
+		setValidated(true)
+	}
 
 	const handleFormSubmit = async () => {
 		try {
-			const confirmationCode = await bookRoom(roomId, booking);
-			setIsSubmitted(true);
-			navigate("/booking-success", { state: { message: confirmationCode } });
+			const confirmationCode = await bookRoom(roomId, booking)
+			setIsSubmitted(true)
+			navigate("/booking-success", { state: { message: confirmationCode } })
 		} catch (error) {
-			const errorMessage = error.message;
-			console.log(errorMessage);
-			navigate("/booking-success", { state: { error: errorMessage } });
+			const errorMessage = error.message
+			console.log(errorMessage)
+			navigate("/booking-success", { state: { error: errorMessage } })
 		}
-	};
+	}
 
 	return (
 		<>
@@ -131,6 +132,7 @@ const BookingForm = () => {
 										value={booking.guestEmail}
 										placeholder="Enter your email"
 										onChange={handleInputChange}
+									
 									/>
 									<Form.Control.Feedback type="invalid">
 										Please enter a valid email address.
@@ -151,11 +153,11 @@ const BookingForm = () => {
 												name="checkInDate"
 												value={booking.checkInDate}
 												placeholder="check-in-date"
-												min={moment().format("YYYY-MM-DD")}
+												min={moment().format("MMM Do, YYYY")}
 												onChange={handleInputChange}
 											/>
 											<Form.Control.Feedback type="invalid">
-												Please select a check-in date.
+												Please select a check in date.
 											</Form.Control.Feedback>
 										</div>
 
@@ -170,11 +172,11 @@ const BookingForm = () => {
 												name="checkOutDate"
 												value={booking.checkOutDate}
 												placeholder="check-out-date"
-												min={moment().format("YYYY-MM-DD")}
+												min={moment().format("MMM Do, YYYY")}
 												onChange={handleInputChange}
 											/>
 											<Form.Control.Feedback type="invalid">
-												Please select a check-out date.
+												Please select a check out date.
 											</Form.Control.Feedback>
 										</div>
 										{errorMessage && <p className="error-message text-danger">{errorMessage}</p>}
@@ -182,7 +184,7 @@ const BookingForm = () => {
 								</fieldset>
 
 								<fieldset style={{ border: "2px" }}>
-									<legend>Number of Guests</legend>
+									<legend>Number of Guest</legend>
 									<div className="row">
 										<div className="col-6">
 											<Form.Label htmlFor="numOfAdults" className="hotel-color">
@@ -217,13 +219,13 @@ const BookingForm = () => {
 												onChange={handleInputChange}
 											/>
 											<Form.Control.Feedback type="invalid">
-												Select 0 if no children.
+												Select 0 if no children
 											</Form.Control.Feedback>
 										</div>
 									</div>
 								</fieldset>
 
-								<div className="form-group mt-2 mb-2">
+								<div className="fom-group mt-2 mb-2">
 									<button type="submit" className="btn btn-hotel">
 										Continue
 									</button>
@@ -245,7 +247,7 @@ const BookingForm = () => {
 				</div>
 			</div>
 		</>
-	);
+	)
 }
 
 export default BookingForm;

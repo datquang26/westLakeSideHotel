@@ -5,6 +5,7 @@ import { deleteRoom, getAllRooms } from "../utils/ApiFunction";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap"
 import {FaEye, FaTrashAlt, FaEdit, FaPlus} from "react-icons/fa"
+import { ThreeCircles } from "react-loader-spinner";
 
 const ExistingRooms = () => {
 	const [rooms, setRooms] = useState([{id: "", roomType: "", roomPrice: ""}])
@@ -21,16 +22,19 @@ const ExistingRooms = () => {
 	}, [])
 
 	const fetchRooms = async () => {
-		setIsLoading(true)
+		setIsLoading(true);
 		try {
-			const result = await getAllRooms()
-			setRooms(result)
-			setIsLoading(false)
+			const result = await getAllRooms();
+			
+			setTimeout(() => {
+				setRooms(result);
+				setIsLoading(false);
+			}, 1300);
 		} catch (error) {
-			setErrorMessage(error.message)
-			// setIsLoading(false)
+			setErrorMessage(error.message);
+			setIsLoading(false);
 		}
-	}
+	};
 
 	useEffect(() => {
 		if (selectedRoomType === "") {
@@ -83,7 +87,17 @@ const ExistingRooms = () => {
 
 
 				{ isLoading ? (
-					<p>Loading existing rooms</p>
+					<div className="d-flex justify-content-center align-items-center" style={{ height: "60vh" }}>
+					<ThreeCircles
+						visible={true}
+						height={100}
+						width={100}
+						color="rgb(93, 152, 225)"
+						ariaLabel="three-circles-loading"
+						wrapperStyle={{}}
+						wrapperClass=""
+					/>
+				</div> 
 				) : (
 					<>
 					<section className="mt-5 mb-5 container">
@@ -122,21 +136,19 @@ const ExistingRooms = () => {
 										<td className="gap-2" >
 											
 											<Link to={`/edit-room/${room.id}`}>
-												<span className="btn btn-info btn-sm">
+												<span className="btn btn-info btn-sm" style={{marginRight:"5px"}}>
 													<FaEye />
 												</span>
-												<span className="btn btn-warning btn-sm">
+												<span className="btn btn-warning btn-sm" style={{marginRight:"5px"}}>
 													<FaEdit />
 												</span>
 											</Link>
                                             
 											<button
-											className="btn btn-danger btn-sm ml-5"
-											onClick={() => handleDelete(room.id)}>
+												className="btn btn-danger btn-sm ml-5"
+												onClick={() => handleDelete(room.id)}>
 												<FaTrashAlt />
 											</button>
-                                            
-										
 										</td>
 									</tr>
 								))}

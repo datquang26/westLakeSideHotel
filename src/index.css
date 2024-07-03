@@ -223,4 +223,19 @@ body {
     height: 60px;
     text-align: center;
   }
+
+  .custom-prev-icon, .custom-next-icon {
+    font-size: 2rem; /* Điều chỉnh kích thước của biểu tượng */
+    color: #000; /* Màu sắc của biểu tượng */
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background: none;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    width: 5%; /* Điều chỉnh độ rộng của khu vực bấm nút */
+}
+
+
   

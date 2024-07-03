@@ -8,7 +8,7 @@ const RoomCard = ({room}) => {
 
         <Card>
             <Card.Body className="d-flex flex-wrap align-items-center">
-            <div className="flex-shrink-0 mr-3 mb-3 mb-md-0" style={{ border: "5px solid rgb(169, 77, 123)", borderRadius: "8px", overflow: "hidden" }}>
+            <div className="flex-shrink-0 mr-3 mb-3 mb-md-0">
 						<Link to={`/book-room/${room.id}`}>
 							<Card.Img
 								variant="top"

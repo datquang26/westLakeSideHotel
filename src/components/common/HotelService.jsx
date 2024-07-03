@@ -18,9 +18,9 @@ const HotelService = () => {
             <Row>
 
                 <h4 className="text-center">
-                    Services at <span className="hotel-color"> Ha Noi - </span> Club
+                    Services at <span className="hotel-color"> Ha Noi Club </span> 
                     <span className="gap-2">
-                        <FaClock /> - 24-Hour Front Desk</span>
+                         - 24-Hour Front Desk</span>
 
 
 

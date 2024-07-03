@@ -10,28 +10,26 @@ import { ThreeCircles } from "react-loader-spinner";
 const Room = () => {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // Đặt ban đầu là true để hiển thị Spinner
+    const [isLoading, setIsLoading] = useState(true); 
     const [currentPage, setCurrentPage] = useState(1);
     const [roomsPerPage] = useState(6);
     const [filteredData, setFilteredData] = useState([{ id: "" }]);
 
     useEffect(() => {
-        // setTimeout để mô phỏng thời gian loading
+       
         const timeout = setTimeout(() => {
-            setIsLoading(true); // Hiển thị Spinner
+            setIsLoading(true); 
             getAllRooms()
                 .then((data) => {
                     setData(data);
                     setFilteredData(data);
-                    setIsLoading(false); // Ẩn Spinner sau khi dữ liệu đã được tải
+                    setIsLoading(false); 
                 })
                 .catch((error) => {
                     setError(error.message);
-                    setIsLoading(false); // Ẩn Spinner nếu có lỗi xảy ra
+                    setIsLoading(false);
                 });
-        }, 1200); // Timeout là 3 giây
-
-        // Clear timeout khi component unmount để tránh memory leaks
+        }, 1200); 
         return () => clearTimeout(timeout);
     }, []);
 
