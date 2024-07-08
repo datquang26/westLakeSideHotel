@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import {FaSignOutAlt, FaUserCircle, FaUserAlt } from "react-icons/fa";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -71,22 +72,25 @@ const NavBar = () => {
                             </a>
 
                             <ul className={`dropdown-menu ${showAccount ? "show" : ""}`}
-                                aria-labelledby="navbarDropdown">
-                                <li>
-                                    <Link to={"/login"} className="dropdown-item">
-                                        Login
+                                aria-labelledby="navbarDropdown"
+                                style={{ minWidth: "145px", paddingLeft: "10px",  border: "1px solid #BBBBBB" }}
+                            >
+                                     
+                                <li  >
+                                    <Link to={"/login"} className="dropdown-item"   >
+                                        <FaUserAlt className="icon" /> Login
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link to={"/profile"} className="dropdown-item">
-                                        Profile
+                                        <FaUserCircle className="icon" /> Profile
                                     </Link>
                                 </li>
 
                                 <li>
                                     <Link to={"/logout"} className="dropdown-item">
-                                        Logout
+                                        <FaSignOutAlt className="icon" /> Logout
                                     </Link>
                                 </li>
                             </ul>
