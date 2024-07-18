@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import {FaSignOutAlt, FaUserCircle, FaUserAlt } from "react-icons/fa";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Logout from "../auth/Logout";
+import { AuthContext } from "../auth/AuthProvider";
 
 
 const NavBar = () => {
     const [showAccount, setShowAccount] = useState(false)
 
+    const { user} = useContext(AuthContext)
+
     const handleAccountClick = () => {
         setShowAccount(!showAccount)
     }
+
+    const isLoggedIn = user !== null
+    const userRole = localStorage.getItem("userRole")
 
 
     return (
@@ -41,13 +48,16 @@ const NavBar = () => {
                             </NavLink>
                         </li>
 
-                        <li className="nav-item">
+                        {isLoggedIn && userRole === "ROLE_ADMIN" && (
+                            <li className="nav-item">
                             <NavLink className="nav-link" aria-current="page" to={"/admin"}>
                                 
                                 Manage Rooms
                             
                             </NavLink>
-                        </li>
+                            </li>
+                        )}
+                        
 
                     </ul>
 
@@ -75,24 +85,15 @@ const NavBar = () => {
                                 aria-labelledby="navbarDropdown"
                                 style={{ minWidth: "145px", paddingLeft: "10px",  border: "1px solid #BBBBBB" }}
                             >
-                                     
-                                <li  >
-                                    <Link to={"/login"} className="dropdown-item"   >
-                                        <FaUserAlt className="icon" /> Login
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <Link to={"/profile"} className="dropdown-item">
-                                        <FaUserCircle className="icon" /> Profile
-                                    </Link>
-                                </li>
-
-                                <li>
-                                    <Link to={"/logout"} className="dropdown-item">
-                                        <FaSignOutAlt className="icon" /> Logout
-                                    </Link>
-                                </li>
+                              {isLoggedIn ? (
+								  <Logout />
+								) : (
+									<li>
+										<Link className="dropdown-item" to={"/login"}>
+                                        Login
+										</Link>
+									</li>
+								)}
                             </ul>
                         </li>
                     </ul>
