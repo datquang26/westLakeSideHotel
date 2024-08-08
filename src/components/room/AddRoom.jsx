@@ -38,7 +38,7 @@ const AddRoom = () => {
         try {
             const success = await addRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice)
             if (success !== undefined) {
-                setSuccessMessage("A new room was added to the database success")
+                setSuccessMessage("A new room was added success")
                 setNewRoom({photo: null, roomType:"", roomPrice:""})
                 setImagePreview("")
                 setErrorMessage("")
@@ -93,8 +93,8 @@ const AddRoom = () => {
                                 Room Price
                             </label>
                             <input
-                            className="form-control"
                             required
+                            className="form-control"
                             id="roomPrice"
                             type="number"
                             name="roomPrice"
@@ -109,6 +109,7 @@ const AddRoom = () => {
                                 Room Photo
                             </label>
                             <input
+                            required
                             id="photo"
                             name="photo"
                             type="file"
@@ -117,9 +118,9 @@ const AddRoom = () => {
                             />
                             {imagePreview && (
                                 <img src={imagePreview}
-                                alt="Preview Room Photo"
+                                alt="Preview room photo"
                                 style={{maxWidth: "400px", maxHeight: "400px"}}
-                                className="mb-3" />
+                                className="mb-3"></img>
                             )}
 
                         </div>
@@ -131,7 +132,7 @@ const AddRoom = () => {
                               
                               </Link>
                       
-                            <button className="btn btn-outline-primary ml-5">
+                            <button type="submit" className="btn btn-outline-primary ml-5">
                                 Save Room
                             </button>
                             

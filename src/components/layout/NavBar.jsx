@@ -1,23 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import {FaSignOutAlt, FaUserCircle, FaUserAlt } from "react-icons/fa";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Logout from "../auth/Logout";
-import { AuthContext } from "../auth/AuthProvider";
-
 
 const NavBar = () => {
     const [showAccount, setShowAccount] = useState(false)
-
-    const { user} = useContext(AuthContext)
 
     const handleAccountClick = () => {
         setShowAccount(!showAccount)
     }
 
-    const isLoggedIn = user !== null
+    const isLoggedIn = localStorage.getItem("token")
     const userRole = localStorage.getItem("userRole")
 
 

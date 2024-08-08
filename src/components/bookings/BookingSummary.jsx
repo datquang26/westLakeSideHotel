@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-// import { Button } from "bootstrap";
-import { Button } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
 	const checkInDate = moment(booking.checkInDate)

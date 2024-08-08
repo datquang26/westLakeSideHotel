@@ -57,16 +57,14 @@ const Checkout = () => {
           <p>{error}</p>
         ) : (
           <div className="room-info">
-            <Carousel>
-        <Carousel.Item>
+            
           <img
             className="d-block w-100"
             src={`data:image/png;base64,${roomInfo.photo}`}
             alt="Room slide"
+            style={{ width: "100%", height: "200px" }}
           />
-        </Carousel.Item>
-        {/* Add additional Carousel.Items for more images if needed */}
-      </Carousel>
+        
             <table className="table table-bordered mt-3">
               <tbody>
                 <tr>

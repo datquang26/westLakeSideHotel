@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { deleteUser, getUser } from "../utils/ApiFunction";
+import { deleteUser, getBookingsByUserId, getUser } from "../utils/ApiFunction";
 import { useNavigate } from "react-router-dom";
 import moment from "moment"
 

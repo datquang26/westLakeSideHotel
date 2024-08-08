@@ -135,7 +135,7 @@ const ExistingRooms = () => {
 										<td>{room.roomPrice}</td>
 										<td className="gap-2" >
 											
-											<Link to={`/edit-room/${room.id}`}>
+											<Link to={`/edit-room/${room.id}`} className="gap-2">
 												<span className="btn btn-info btn-sm" style={{marginRight:"5px"}}>
 													<FaEye />
 												</span>
@@ -161,9 +161,7 @@ const ExistingRooms = () => {
 						/>
 					</section>
 					</>
-				)
-
-				}
+				)}
 					
 				</>
 			) }

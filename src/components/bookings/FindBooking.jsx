@@ -1,143 +1,144 @@
 import React, { useState } from "react";
 import {cancelBooking, getBookingByConfirmationCode} from '../utils/ApiFunction'
-import { Fa500Px } from "react-icons/fa";
+import moment from "moment"
 
 const FindBooking = () => {
-    const[confirmationCode, setConfirmationCode] = useState("")
-    const[error, setError] = useState(null)
-    const[successMessage, setSuccessMessage] = useState("")
-    const[isLoading, setIsLoading] = useState(false)
-    const[bookingInfo, setBookingInfo] = useState({
-        id:"",
-        room:{id:"", roomType: ""},
-        bookingConfirmationCode: "",
-        roomNumber: "",
-        checkInDate: "",
-        checkOutDate: "",
-        guestFullName: "",
-        guestEmail: "",
-        numOfAdults: "",
-        numOfChildren: "",
-        totalNumOfGuest: ""
-    })
-    const[isDeleted, setIsDeleted] = useState(false)
+	const [confirmationCode, setConfirmationCode] = useState("")
+	const [error, setError] = useState(null)
+	const [successMessage, setSuccessMessage] = useState("")
+	const [isLoading, setIsLoading] = useState(false)
+	const [bookingInfo, setBookingInfo] = useState({
+		id: "",
+		bookingConfirmationCode: "",
+		room: { id: "", roomType: "" },
+		roomNumber: "",
+		checkInDate: "",
+		checkOutDate: "",
+		guestName: "",
+		guestEmail: "",
+		numOfAdults: "",
+		numOfChildren: "",
+		totalNumOfGuests: ""
+	})
 
-    const emptyBookingInfo = {
-        id:"",
-        room:{id:"", roomType: ""},
-        bookingConfirmationCode: "",
-        roomNumber: "",
-        checkInDate: "",
-        checkOutDate: "",
-        guestFullName: "",
-        guestEmail: "",
-        numOfAdults: "",
-        numOfChildren: "",
-        totalNumOfGuest: ""
-    }
-    const handleInputChange = (e) =>{
-        setConfirmationCode(e.target.value)
-    }
-    const handleFormSubmit = async(e) => {
-        e.preventDefault()
-        setIsLoading(true)
-        try {
-            const data = await getBookingByConfirmationCode(confirmationCode)
-            setBookingInfo(data)
-            setError(null)
-        } catch (error) {
-            setBookingInfo(clearBookingInfo)
-            if(error.response && error.response.status === 404) {
-                setError(error.response.data.message)
-            } else {
-                setError(error.message)
-            }
-        } 
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 2000)
-    }
+	const emptyBookingInfo = {
+		id: "",
+		bookingConfirmationCode: "",
+		room: { id: "", roomType: "" },
+		roomNumber: "",
+		checkInDate: "",
+		checkOutDate: "",
+		guestName: "",
+		guestEmail: "",
+		numOfAdults: "",
+		numOfChildren: "",
+		totalNumOfGuests: ""
+	}
+	const [isDeleted, setIsDeleted] = useState(false)
 
-    const handleBookingCancellation = async(bookingId) => {
-        try {
-            await cancelBooking(bookingInfo.id)
-            setIsDeleted(true)
-            setSuccessMessage("Booking has been cancelled successfully !")
-            setBookingInfo(emptyBookingInfo)
-            setConfirmationCode("")
-            setError(null)
+	const handleInputChange = (event) => {
+		setConfirmationCode(event.target.value)
+	}
 
-        } catch (error) {
-            setError(error.message)
-        }
-        setTimeout(() => {
-            setSuccessMessage("")
-            setIsDeleted(false)
-        }, 2000)
-    }
-    
+	const handleFormSubmit = async (event) => {
+		event.preventDefault()
+		setIsLoading(true)
 
-    return (
-        <>
-        <div className="container mt-5 d-flex flex-column 
-                        justify-content-center align-items-center">
-                <h2 className="text-center mb-4">Find My Booking</h2>
-                <form onSubmit={handleFormSubmit} className="col-md-6">
-                    <div className="input-group mb-3">
-                        <input
-                            className="form-control"
-                            type="text"
-                            id="confirmationCode"
-                            name="confirmationCode"
-                            value={confirmationCode}
-                            onChange={handleInputChange}
-                            placeholder="Enter the booking confirmation code"
-                        />
-                        <button className="btn btn-hotel input-group-text">Find booking</button>
-                    </div>
-                </form>
-                {isLoading ? ( 
-                    <div>Finding your booking.... </div>
-                    
-                ) : error ? (
-                    <div className="text-danger"> {error}</div>
-            
-                ): bookingInfo.bookingConfirmationCode ? (
-                    <div className="col-md-6 mt-4 mb-5"> 
-                        <h3>Booking Information</h3>
-                        
-                        <p>Booking Confirmation Code: {bookingInfo.bookingConfirmationCode}</p>
-                        <p>Booking ID: {bookingInfo.id}</p>
-                        <p>Room Number: {bookingInfo.room.id} </p>
-                        <p>Room Type: {bookingInfo.room.roomType}</p>
-                        <p>Check-in Date: {bookingInfo.checkInDate}</p>
-                        <p>Check-out Date: {bookingInfo.checkOutDate}</p>
-                        <p>Full Name: {bookingInfo.guestFullName}</p>
-                        <p>Email Address: {bookingInfo.guestEmail}</p>
-                        <p>Adults:{bookingInfo.numOfAdults}</p>
-                        <p>Children: {bookingInfo.numOfChildren}</p>
-                        <p>Total Guest: {bookingInfo.totalNumOfGuest}</p>
-                        
-                        {!isDeleted && (
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => handleBookingCancellation(bookingInfo.id)}
-                            >Cancel Booking</button>
-                        )}
+		try {
+			const data = await getBookingByConfirmationCode(confirmationCode)
+			setBookingInfo(data)
+			setError(null)
+		} catch (error) {
+			setBookingInfo(emptyBookingInfo)
+			if (error.response && error.response.status === 404) {
+				setError(error.response.data.message)
+			} else {
+				setError(error.message)
+			}
+		}
 
-                    </div>
-                ): (
-                    <div>find booking... </div>
-                )}
+		setTimeout(() => setIsLoading(false), 2000)
+	}
 
-                {isDeleted && 
-                    <div className="alert alert-success mt-3" role="alert">
-                            {successMessage}
-                    </div>
-                }
-            </div>
-        </>
-    )
+	const handleBookingCancellation = async (bookingId) => {
+		try {
+			await cancelBooking(bookingInfo.id)
+			setIsDeleted(true)
+			setSuccessMessage("Booking has been cancelled successfully!")
+			setBookingInfo(emptyBookingInfo)
+			setConfirmationCode("")
+			setError(null)
+		} catch (error) {
+			setError(error.message)
+		}
+		setTimeout(() => {
+			setSuccessMessage("")
+			setIsDeleted(false)
+		}, 2000)
+	}
+
+	return (
+		<>
+			<div className="container mt-5 d-flex flex-column justify-content-center align-items-center">
+				<h2 className="text-center mb-4">Find My Booking</h2>
+				<form onSubmit={handleFormSubmit} className="col-md-6">
+					<div className="input-group mb-3">
+						<input
+							className="form-control"
+							type="text"
+							id="confirmationCode"
+							name="confirmationCode"
+							value={confirmationCode}
+							onChange={handleInputChange}
+							placeholder="Enter the booking confirmation code"
+						/>
+
+						<button type="submit" className="btn btn-hotel input-group-text">
+							Find booking
+						</button>
+					</div>
+				</form>
+
+				{isLoading ? (
+					<div>Finding your booking...</div>
+				) : error ? (
+					<div className="text-danger">Error: {error}</div>
+				) : bookingInfo.bookingConfirmationCode ? (
+					<div className="col-md-6 mt-4 mb-5">
+						<h3>Booking Information</h3>
+						<p className="text-success">Confirmation Code: {bookingInfo.bookingConfirmationCode}</p>
+						<p>Room Number: {bookingInfo.room.id}</p>
+						<p>Room Type: {bookingInfo.room.roomType}</p>
+						<p>
+							Check-in Date:{" "}
+							{moment(bookingInfo.checkInDate).subtract(1, "month").format("MMM Do, YYYY")}
+						</p>
+						<p>
+							Check-out Date:{" "}
+							{moment(bookingInfo.checkInDate).subtract(1, "month").format("MMM Do, YYYY")}
+						</p>
+						<p>Full Name: {bookingInfo.guestName}</p>
+						<p>Email Address: {bookingInfo.guestEmail}</p>
+						<p>Adults: {bookingInfo.numOfAdults}</p>
+						<p>Children: {bookingInfo.numOfChildren}</p>
+						<p>Total Guest: {bookingInfo.totalNumOfGuests}</p>
+
+						{!isDeleted && (
+							<button
+								onClick={() => handleBookingCancellation(bookingInfo.id)}
+								className="btn btn-danger">
+								Cancel Booking
+							</button>
+						)}
+					</div>
+				) : (
+					<div>find booking...</div>
+				)}
+
+				{isDeleted && <div className="alert alert-success mt-3 fade show">{successMessage}</div>}
+			</div>
+		</>
+	)
 }
 
 export default FindBooking

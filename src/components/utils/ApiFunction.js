@@ -20,7 +20,9 @@ export async function addRoom(photo, roomType, roomPrice) {
     formData.append("roomType", roomType)
     formData.append("roomPrice", roomPrice)
 
-    const response = await api.post("/rooms/add/new-room", formData)
+    const response = await api.post("/rooms/add/new-room", formData,{
+		headers: getHeader()
+	})
     if(response.status === 201) {
         return true
     } else {
@@ -49,7 +51,9 @@ export async function getAllRooms() {
 // delete room by id
 export async function deleteRoom(roomId){
     try {
-        const result = await api.delete(`/rooms/delete/room/${roomId}`)
+        const result = await api.delete(`/rooms/delete/room/${roomId}`, {
+			headers: getHeader()
+		})
         return result.data
     } catch (error) {
         throw new Error(`Error deleting room ${error.message}`)
@@ -61,7 +65,9 @@ export async function updateRoom(roomId, roomData){
     formData.append("roomType", roomData.roomType)
     formData.append("roomPrice", roomData.roomPrice)
     formData.append("photo", roomData.photo)
-    const response = await api.put(`/rooms/update/${roomId}`, formData)
+    const response = await api.put(`/rooms/update/${roomId}`, formData,{
+		headers: getHeader()
+	})
     return response
 }
 
@@ -93,7 +99,9 @@ export async function bookRoom(roomId, booking) {
 //This function gets all bookings from the db
 export async function getAllBookings() {
     try {
-        const result = await api.get("/bookings/all-bookings")
+        const result = await api.get("/bookings/all-bookings", {
+			headers: getHeader()
+		})
         return result.data
     } catch (error) {
         throw new Error(`Error fetch bookings: ${error.message}`)
@@ -191,4 +199,17 @@ export async function getUser(userId, token){
     } catch (error) {
         throw error
     }
+}
+
+/* This is the function to get user bookings by the user id */
+export async function getBookingsByUserId(userId, token) {
+	try {
+		const response = await api.get(`/bookings/user/${userId}/bookings`, {
+			headers: getHeader()
+		})
+		return response.data
+	} catch (error) {
+		console.error("Error fetching bookings:", error.message)
+		throw new Error("Failed to fetch bookings")
+	}
 }

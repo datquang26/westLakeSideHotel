@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { loginUser } from "../utils/ApiFunction";
-import { useNavigate, Link } from "react-router-dom";
-import AuthProvider, { AuthContext } from "./AuthProvider";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useAuth } from "./AuthProvider";
 
 
 const Login = () => {
@@ -13,23 +12,24 @@ const Login = () => {
     })
 
     const navigate = useNavigate()
-    const { handleLogin} = useContext(AuthContext)
+    const auth = useAuth()
+	const location = useLocation()
+	const redirectUrl = location.state?.path || "/"
 
     const handleInputChange = (e) => {
         setLogin({...login, [e.target.name] : e.target.value})
     }
-    const handleSubmit= async(e) => {
+
+    const handleSubmit = async(e) => {
         e.preventDefault()
         const success = await loginUser(login)
         if(success){
             const token = success.token
-            handleLogin(token)
-            navigate("/")
-            // window.location.reload()
+            auth.handleLogin(token)
+            navigate(redirectUrl, { replace: true })
         }else{
             setErrorMessage("Invalid username or password. Please try again.")
         }
-        console.log(success)
         setTimeout(() => {
             setErrorMessage("")
         }, 4000)
@@ -41,7 +41,7 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
 
             <div className="row mb-3">
-                <label htmlFor="'email" className="col-sm-2 col-">
+                <label htmlFor="'email" className="col-sm-2 col-form-label">
                     Email
                 </label>
                 <div>
@@ -58,7 +58,7 @@ const Login = () => {
             </div>
 
             <div className="row mb-3">
-                <label htmlFor="'password" className="col-sm-2 col-">
+                <label htmlFor="'password" className="col-sm-2 col-form-label">
                     Password
                 </label>
                 <div>

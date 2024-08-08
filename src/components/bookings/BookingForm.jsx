@@ -2,7 +2,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { bookRoom, getRoomById } from '../utils/ApiFunction';
-import { FormControl, Form  } from "react-bootstrap";
+import { FormControl, Form, Button  } from "react-bootstrap";
 import BookingSummary from "./BookingSummary";
 
 const BookingForm = () => {
@@ -132,7 +132,7 @@ const currentUser = localStorage.getItem("userId")
 										value={booking.guestEmail}
 										placeholder="Enter your email"
 										onChange={handleInputChange}
-									
+										disabled
 									/>
 									<Form.Control.Feedback type="invalid">
 										Please enter a valid email address.

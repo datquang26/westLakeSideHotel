@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import RoomCard from "./RoomCard";
 import { getAllRooms } from "../utils/ApiFunction";
-import { Row, Col, Container, Spinner } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import RoomFilter from '../common/RoomFilter';
 import RoomPaginator from "../common/RoomPaginator";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
