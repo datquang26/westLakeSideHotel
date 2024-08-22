@@ -28,11 +28,17 @@ const DateSlider = ({ onDateChange, onFilterChange }) => {
 	
 	return (
 		<>
+		
+		<div className="d-flex flex-column align-items-center">
 			<h5>Filter bookings by date</h5>
-			<DateRangePicker ranges={[dateRange]} onChange={handleSelect} className="mb-4 "/>
-			<button className="btn btn-secondary" onClick={handleClearFilter}>
-				Clear Filter
-			</button>
+			<div className="d-flex justify-content-center align-items-start">
+				<DateRangePicker ranges={[dateRange]} onChange={handleSelect} className="mb-4 " />
+				<button className="btn btn-secondary" onClick={handleClearFilter} >  
+					Clear Filter
+				</button>
+			</div>
+		</div>
+		
 		</>
 	)
 }

@@ -20,13 +20,19 @@ const RoomSearch = () => {
         e.preventDefault();
         const checkIn = moment(searchQuery.checkInDate)
         const checkOut = moment(searchQuery.checkOutDate)
-        if(!checkIn.isValid() || !checkOut.isValid()) {
-            setErrorMessage("Please, enter valid date range")
-            return
+        if (!checkIn.isValid() || !checkOut.isValid()) {
+            setErrorMessage("Please, enter valid date range");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 3000);
+            return;
         }
-        if (!checkOut.isSameOrAfter(checkIn)){
-            setErrorMessage("Check-In Date must before Check-Out Date")
-            return
+        if (!checkOut.isSameOrAfter(checkIn)) {
+            setErrorMessage("Check-In Date must be before Check-Out Date");
+            setTimeout(() => {
+                setErrorMessage("");
+            }, 3000); 
+            return;
         }
         setIsLoading(true)
         getAvailableRooms(searchQuery.checkInDate,
@@ -102,6 +108,7 @@ const RoomSearch = () => {
 									<RoomTypeSelector
 										handleRoomInputChange={handleInputChange}
 										newRoom={searchQuery}
+                                        disableAddNew={true}
 									/>
 									<Button variant="secondary" type="submit" className="ml-2">
 										Search

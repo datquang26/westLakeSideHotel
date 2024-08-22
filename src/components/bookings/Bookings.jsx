@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { cancelBooking, getAllBookings } from "../utils/ApiFunction";
 import BookingsTable from "./BookingsTable";
 import Header from "../common/Header";
-import { Hourglass } from "react-loader-spinner";
+import { ThreeCircles } from "react-loader-spinner";
 
 const Bookings = () => {
     const[bookingInfo, setBookingInfo] = useState([])
@@ -39,15 +39,17 @@ const Bookings = () => {
             {error && (<div className="text-danger">{error}</div>)}
             {isLoading ? (
                 <div className="mt-5 mb-5">
-                <Hourglass
-                    visible="true"
-                    height="30"
-                    width="30"
-                    ariaLabel="hourglass-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    colors={['rgb(93, 152, 225)']}
-                  />
+                <div className="d-flex justify-content-center align-items-center" style={{ height: "60vh" }}>
+					<ThreeCircles
+						visible={true}
+						height={100}
+						width={100}
+						color="rgb(0,0,0)"
+						ariaLabel="three-circles-loading"
+						wrapperStyle={{}}
+						wrapperClass=""
+					/>
+				</div> 
             </div>
         ):(
             <BookingsTable 

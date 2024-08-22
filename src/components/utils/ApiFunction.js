@@ -1,32 +1,58 @@
 import axios from "axios"
-import { el } from "date-fns/locale"
 
 export const api = axios.create({
     baseURL: "http://localhost:9193"
 })
 
 export const getHeader = () => {
-    const token = localStorage.getItem("token")
-    return{
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
-    }
+	const token = localStorage.getItem("token")
+	return {
+		Authorization: `Bearer ${token}`,
+		// "Content-Type": "multipart/form-data"
+	}
 }
 
-// create room to the db
-export async function addRoom(photo, roomType, roomPrice) {
-    const formData = new FormData()
-    formData.append("photo", photo)
-    formData.append("roomType", roomType)
-    formData.append("roomPrice", roomPrice)
+/* This function adds a new room room to the database */
+// export async function addRoom(photo, roomType, roomPrice, description, status) {
+// 	const formData = new FormData()
+// 	formData.append("photo", photo)
+// 	formData.append("roomType", roomType)
+// 	formData.append("roomPrice", roomPrice)
+//     formData.append("description", description)
+//     formData.append("status", status)
 
-    const response = await api.post("/rooms/add/new-room", formData,{
-		headers: getHeader()
-	})
-    if(response.status === 201) {
-        return true
-    } else {
-        return false
+// 	const response = await api.post("/rooms/add/new-room", formData,{
+// 		headers: getHeader()
+// 	})
+// 	if (response.status === 201) {
+// 		return true
+// 	} else {
+// 		return false
+// 	}
+// }
+export async function addRoom(photo, roomType, roomPrice, description, status) {
+    if (!["1","2","3"].includes(status)) {
+        throw new Error("Trạng thái không hợp lệ");
+    }
+    const formData = new FormData();
+    formData.append("photo", photo);
+    formData.append("roomType", roomType);
+    formData.append("roomPrice", roomPrice);
+    formData.append("description", description);
+    formData.append("status", status);
+
+    try {
+        const response = await api.post("/rooms/add/new-room", formData, {
+            headers: getHeader(),
+        });
+        if (response.status === 200) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error("Error in addRoom:", error);
+        throw error; // Thay vì trả false, ném lỗi để dễ dàng xử lý hơn ở nơi gọi hàm
     }
 }
 //  get room type from db
@@ -61,10 +87,17 @@ export async function deleteRoom(roomId){
 }
 //update room
 export async function updateRoom(roomId, roomData){
+    if (!["1","2","3"].includes(roomData.status)) {
+        throw new Error("Trạng thái không hợp lệ");
+    }
     const formData = new FormData()
     formData.append("roomType", roomData.roomType)
     formData.append("roomPrice", roomData.roomPrice)
     formData.append("photo", roomData.photo)
+    formData.append("description", roomData.description)
+    formData.append("status", roomData.status)
+    
+ 
     const response = await api.put(`/rooms/update/${roomId}`, formData,{
 		headers: getHeader()
 	})

@@ -35,7 +35,7 @@ const RoomCarousel = () => {
 				ariaLabel="hourglass-loading"
 				wrapperStyle={{}}
 				wrapperClass=""
-				colors={['rgb(93, 152, 225)']}
+				colors={['rgb(0,0,0)']}
   			/>
 		</div>;
     }
@@ -53,18 +53,18 @@ const RoomCarousel = () => {
                     fontFamily: "Arial, sans-serif",
                     fontSize: "1.5rem",
                     fontWeight: "bold",
-                    color: "#1E90FF",
+                    color: "black",
                     textDecoration: "none",
                     padding: "10px 20px",
                     transition: "color 0.3s ease, text-decoration 0.3s ease",
                     cursor: "pointer"
                 }}
                 onMouseEnter={(e) => {
-                    e.target.style.color = "#4682B4";
-                    e.target.style.textDecoration = "underline";
+                    e.target.style.color = "#AB6C2D";
+                    e.target.style.textDecoration = "none";
                 }}
                 onMouseLeave={(e) => {
-                    e.target.style.color = "#1E90FF";
+                    e.target.style.color = "#AB6C2D";
                     e.target.style.textDecoration = "none";
                 }}
             >

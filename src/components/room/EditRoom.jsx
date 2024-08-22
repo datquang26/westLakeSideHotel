@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { getRoomById, updateRoom } from "../utils/ApiFunction"
-import { Link, useParams } from "react-router-dom"
+import { getRoomById, updateRoom } from "../utils/ApiFunction";
+import { Link, useParams } from "react-router-dom";
 
 const EditRoom = () => {
 	const [room, setRoom] = useState({
 		photo: "",
 		roomType: "",
-		roomPrice: ""
+		roomPrice: "",
+		description: "",
+        status: ""
 	})
 
 	const [imagePreview, setImagePreview] = useState("")
@@ -41,7 +43,7 @@ const EditRoom = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-
+	
 		try {
 			const response = await updateRoom(roomId, room)
 			if (response.status === 200) {
@@ -50,12 +52,27 @@ const EditRoom = () => {
 				setRoom(updatedRoomData)
 				setImagePreview(updatedRoomData.photo)
 				setErrorMessage("")
+	
+				// Xóa thông báo thành công sau 3 giây (3000ms)
+				setTimeout(() => {
+					setSuccessMessage("")
+				}, 3000)
 			} else {
 				setErrorMessage("Error updating room")
+	
+				// Xóa thông báo lỗi sau 3 giây (3000ms)
+				setTimeout(() => {
+					setErrorMessage("")
+				}, 3000)
 			}
 		} catch (error) {
 			console.error(error)
 			setErrorMessage(error.message)
+	
+			// Xóa thông báo lỗi sau 3 giây (3000ms)
+			setTimeout(() => {
+				setErrorMessage("")
+			}, 3000)
 		}
 	}
 
@@ -88,6 +105,41 @@ const EditRoom = () => {
 								onChange={handleInputChange}
 							/>
 						</div>
+
+						<div className="mb-3">
+                            <label htmlFor="description" className="form-label hotel-color"> 
+                                Description
+                            </label>
+                            <div>
+                            <input
+                                required
+                                className="form-control"
+                                id="description"
+                                type="text"
+                                name="description"
+                                value={room.description}
+                                onChange={handleInputChange}
+                            />
+                            
+                            </div>
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="status" className="form-label hotel-color"> 
+                                Status
+                            </label>
+                            <input
+                                required
+                                className="form-control"
+                                id="status"
+                                type="text"
+                                name="status"
+                                value={room.status}
+                                onChange={handleInputChange}
+                            />
+                            
+                        </div>
+
 						<div className="mb-3">
 							<label htmlFor="roomPrice" className="form-label hotel-color">
 								Room Price
@@ -118,7 +170,7 @@ const EditRoom = () => {
 								<img
 									src={`data:image/jpeg;base64,${imagePreview}`}
 									alt="Room preview"
-									style={{ maxWidth: "400px", maxHeight: "400" }}
+									style={{ maxWidth: "400px", maxHeight: "400px" }}
 									className="mt-3"
 								/>
 							)}
@@ -138,4 +190,4 @@ const EditRoom = () => {
 	)
 }
 
-export default EditRoom
+export default EditRoom;

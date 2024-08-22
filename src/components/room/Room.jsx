@@ -40,7 +40,7 @@ const Room = () => {
                     visible={true}
                     height={100}
                     width={100}
-                    color="rgb(93, 152, 225)"
+                    color="black"
                     ariaLabel="three-circles-loading"
                     wrapperStyle={{}}
                     wrapperClass=""

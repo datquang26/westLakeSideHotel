@@ -27,9 +27,9 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
 	}, [isBookingConfirmed, navigate])
 
 	return (
-		<div className="row">
-			<div className="col-md-6"></div>
-			<div className="card card-body mt-5">
+		<div className="row" >
+			<div className="col-md-6" ></div>
+			<div className="card card-body " style={{ height: "490px" }}>
 				<h4 className="card-title hotel-color">Reservation Summary</h4>
 				<p>
 					Name: <strong>{booking.guestFullName}</strong>
@@ -56,6 +56,9 @@ const BookingSummary = ({ booking, payment, isFormValid, onConfirm }) => {
 						<p>Children : {booking.numOfChildren}</p>
 					</strong>
 				</div>
+				<p>
+					Special request: <strong>{booking.description}</strong>
+				</p>
 
 				{payment > 0 ? (
 					<>

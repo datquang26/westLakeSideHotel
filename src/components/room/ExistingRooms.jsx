@@ -92,7 +92,7 @@ const ExistingRooms = () => {
 						visible={true}
 						height={100}
 						width={100}
-						color="rgb(93, 152, 225)"
+						color="rgb(0,0,0)"
 						ariaLabel="three-circles-loading"
 						wrapperStyle={{}}
 						wrapperClass=""
@@ -109,12 +109,27 @@ const ExistingRooms = () => {
 							<Col md={6} className="mb-2 md-mb-0">
 								<RoomFilter data={rooms} setFilteredData={setFilteredRooms} />
 							</Col>
-
 							<Col md={6} className="d-flex justify-content-end">
-								<Link to={"/add-room"}>
-									<FaPlus /> Add Room
+								<Link 
+									to={"/add-room"}
+									style={{ 
+										color: "#AB6C2D",  
+										textDecoration: "none", 
+										display: "flex", 
+										alignItems: "center"
+									}}
+									onMouseEnter={(e) => {
+										e.target.style.color = "black";  // Màu chữ khi hover
+									}}
+									onMouseLeave={(e) => {
+										e.target.style.color = "#AB6C2D";  // Màu chữ khi không hover
+									}}
+								>
+									<FaPlus style={{ marginRight: "5px", color: "#AB6C2D" }}
+										
+									/> Add Room
 								</Link>
-							</Col>
+						</Col>
 						</Row>
 
 						<table className="table table-bordered table-hover">
@@ -135,20 +150,54 @@ const ExistingRooms = () => {
 										<td>{room.roomPrice}</td>
 										<td className="gap-2" >
 											
+											
 											<Link to={`/edit-room/${room.id}`} className="gap-2">
-												<span className="btn btn-info btn-sm" style={{marginRight:"5px"}}>
-													<FaEye />
-												</span>
-												<span className="btn btn-warning btn-sm" style={{marginRight:"5px"}}>
-													<FaEdit />
-												</span>
-											</Link>
-                                            
-											<button
-												className="btn btn-danger btn-sm ml-5"
-												onClick={() => handleDelete(room.id)}>
-												<FaTrashAlt />
-											</button>
+													<span 
+														style={{ 
+															marginRight: "5px", 
+															color: "#AB6C2D", 
+															border: "2px solid #AB6C2D", 
+															borderRadius: "50%", 
+															padding: "5px", 
+															display: "inline-flex", 
+															alignItems: "center", 
+															justifyContent: "center" 
+														}}
+													>
+														<FaEye />
+													</span>
+													<span 
+														style={{ 
+															marginRight: "5px", 
+															color: "#AB6C2D", 
+															border: "2px solid #AB6C2D", 
+															borderRadius: "50%", 
+															padding: "5px", 
+															display: "inline-flex", 
+															alignItems: "center", 
+															justifyContent: "center" 
+														}}
+													>
+														<FaEdit />
+													</span>
+												</Link>
+
+												<button
+													style={{ 
+														color: "#AB6C2D", 
+														border: "2px solid #AB6C2D", 
+														borderRadius: "50%", 
+														padding: "5px", 
+														backgroundColor: "transparent", 
+														display: "inline-flex", 
+														alignItems: "center", 
+														justifyContent: "center" 
+													}}
+													onClick={() => handleDelete(room.id)}
+												>
+													<FaTrashAlt />
+												</button>
+
 										</td>
 									</tr>
 								))}

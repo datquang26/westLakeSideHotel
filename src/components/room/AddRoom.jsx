@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { addRoom } from "../utils/ApiFunction";
 import RoomTypeSelector from "../common/RoomTypeSelector";
 import { Link } from "react-router-dom"
@@ -7,7 +7,10 @@ const AddRoom = () => {
     const[newRoom, setNewRoom] = useState({
         photo: null,
         roomType: "",
-        roomPrice: ""
+        roomPrice: "",
+        description: "",
+        status: ""
+        
     })
 
     const[successMessage, setSuccessMessage] = useState("")
@@ -33,26 +36,67 @@ const AddRoom = () => {
         setImagePreview(URL.createObjectURL(selectedImage))
     }
 
+    // const handleSubmit = async (e) => {
+	// 	e.preventDefault()
+	// 	try {
+	// 		const success = await addRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.status, newRoom.description)
+	// 		if (success !== undefined) {
+	// 			setSuccessMessage("A new room was  added successfully !")
+	// 			setNewRoom({ photo: null, roomType: "", roomPrice: "", status: "", description: "" })
+	// 			setImagePreview("")
+	// 			setErrorMessage("")
+	// 		} else {
+	// 			setErrorMessage("Error adding new room")
+	// 		}
+	// 	} catch (error) {
+	// 		setErrorMessage(error.message)
+	// 	}
+	// 	setTimeout(() => {
+	// 		setSuccessMessage("")
+	// 		setErrorMessage("")
+	// 	}, 3000)
+	// }
+
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
-            const success = await addRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice)
-            if (success !== undefined) {
-                setSuccessMessage("A new room was added success")
-                setNewRoom({photo: null, roomType:"", roomPrice:""})
-                setImagePreview("")
-                setErrorMessage("")
+            // In ra giá trị của newRoom để kiểm tra
+            console.log("Submitting:", newRoom);
+    
+            // Kiểm tra các giá trị trước khi gửi
+            if (!newRoom.roomType || !newRoom.status || !newRoom.description || !newRoom.photo) {
+                setErrorMessage("Please fill out all required fields.");
+                return;
+            }
+    
+            const success = await addRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.description, newRoom.status);
+    
+            if (success) {
+                setSuccessMessage("A new room was added successfully!");
+                setNewRoom({ photo: null, roomType: "", roomPrice: "", status: "", description: "" });
+                setImagePreview("");
+                setErrorMessage("");
             } else {
-                setErrorMessage("Error adding new room")
+                setErrorMessage("Error adding new room");
             }
         } catch (error) {
-            setErrorMessage(error.message)
-        } 
+            console.error("Submit error:", error);  // In ra lỗi cụ thể để kiểm tra
+            setErrorMessage(error.message || "An unexpected error occurred");
+        }
+    
         setTimeout(() => {
-            setSuccessMessage("")
-            setErrorMessage("")
-        }, 3000)
+            setSuccessMessage("");
+            setErrorMessage("");
+        }, 3000);
     }
+
+    useEffect(() => {
+        return () => {
+            if (imagePreview) {
+                URL.revokeObjectURL(imagePreview)
+            }
+        }
+    }, [imagePreview])
 
     return (
         <>
@@ -89,6 +133,40 @@ const AddRoom = () => {
                         </div>
 
                         <div className="mb-3">
+                            <label htmlFor="description" className="form-label"> 
+                                Description
+                            </label>
+                            <div>
+                            <input
+                                required
+                                className="form-control"
+                                id="description"
+                                type="text"
+                                name="description"
+                                value={newRoom.description}
+                                onChange={handleRoomInputChange}
+                            />
+                            
+                            </div>
+                        </div>
+
+                        <div className="mb-3">
+                            <label htmlFor="status" className="form-label"> 
+                                Status
+                            </label>
+                            <input
+                                required
+                                className="form-control"
+                                id="status"
+                                type="text"
+                                name="status"
+                                value={newRoom.status}
+                                onChange={handleRoomInputChange}
+                            />
+                            
+                        </div>
+
+                        <div className="mb-3">
                             <label htmlFor="roomPrice" className="form-label"> 
                                 Room Price
                             </label>
@@ -105,16 +183,16 @@ const AddRoom = () => {
 
 
                         <div className="mb-3">
-                            <label htmlFor="photp" className="form-label"> 
+                            <label htmlFor="photo" className="form-label"> 
                                 Room Photo
                             </label>
                             <input
-                            required
-                            id="photo"
-                            name="photo"
-                            type="file"
-                            className="form-control"
-                            onChange={handleImageChange}
+                                required
+                                id="photo"
+                                name="photo"
+                                type="file"
+                                className="form-control"
+                                onChange={handleImageChange}
                             />
                             {imagePreview && (
                                 <img src={imagePreview}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getRoomTypes } from "../utils/ApiFunction";
 
-const RoomTypeSelector = ({ handleRoomInputChange, newRoom }) => {
+const RoomTypeSelector = ({ handleRoomInputChange, newRoom, disableAddNew  }) => {
 	const [roomTypes, setRoomTypes] = useState([""])
 	const [showNewRoomTypeInput, setShowNewRoomTypeInput] = useState(false)
 	const [newRoomType, setNewRoomType] = useState("")
@@ -41,7 +41,9 @@ const RoomTypeSelector = ({ handleRoomInputChange, newRoom }) => {
 						}}
 						value={newRoom.roomType}>
 						<option value="">Select a room type</option>
-						<option value={"Add New"}>Add New</option>
+						{!disableAddNew && (
+							<option value={"Add New"}>Add New</option>
+						)}
 						{roomTypes.map((type, index) => (
 							<option key={index} value={type}>
 								{type}

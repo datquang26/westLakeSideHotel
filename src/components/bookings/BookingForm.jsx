@@ -19,7 +19,8 @@ const currentUser = localStorage.getItem("userId")
 		checkInDate: "",
 		checkOutDate: "",
 		numOfAdults: "",
-		numOfChildren: ""
+		numOfChildren: "",
+		description: ""
 	})
 
 	const { roomId } = useParams()
@@ -83,6 +84,8 @@ const currentUser = localStorage.getItem("userId")
 
 	const handleFormSubmit = async () => {
 		try {
+			const paymentAmount = calculatePayment();
+        	const bookingWithPayment = { ...booking, totalPrice: paymentAmount };
 			const confirmationCode = await bookRoom(roomId, booking)
 			setIsSubmitted(true)
 			navigate("/booking-success", { state: { message: confirmationCode } })
@@ -98,7 +101,7 @@ const currentUser = localStorage.getItem("userId")
 			<div className="container mb-5">
 				<div className="row">
 					<div className="col-md-6">
-						<div className="card card-body mt-5">
+						<div className="card card-body">
 							<h4 className="card-title">Reserve Room</h4>
 
 							<Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -223,6 +226,22 @@ const currentUser = localStorage.getItem("userId")
 											</Form.Control.Feedback>
 										</div>
 									</div>
+									<div className="col-12">
+										<Form.Group>
+											<Form.Label htmlFor="description" className="hotel-color">
+												Special request
+											</Form.Label>
+											<FormControl
+												required
+												type="text"
+												id="description"
+												name="description"
+												value={booking.description}
+												placeholder="Enter your fullname"
+												onChange={handleInputChange}
+											/>
+									</Form.Group>
+									</div>
 								</fieldset>
 
 								<div className="fom-group mt-2 mb-2">
@@ -234,7 +253,7 @@ const currentUser = localStorage.getItem("userId")
 						</div>
 					</div>
 
-					<div className="col-md-4">
+					<div className="col-md-4" >
 						{isSubmitted && (
 							<BookingSummary
 								booking={booking}
